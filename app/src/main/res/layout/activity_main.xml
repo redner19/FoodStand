@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:titleTextColor="@color/white"
             app:title="Food Stand"
-            app:titleCentered="true"/>
+            app:menu="@menu/recipe_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView

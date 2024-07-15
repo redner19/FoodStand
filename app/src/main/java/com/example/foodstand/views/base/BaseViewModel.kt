@@ -1,11 +1,18 @@
 package com.example.foodstand.views.base
 
 import android.accounts.NetworkErrorException
+import android.app.Application
+import android.widget.Toast
+import androidx.core.content.res.TypedArrayUtils.getText
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.foodstand.R
+import com.example.foodstand.util.NetworkListener
 import com.example.foodstand.util.SingleLiveEvent
+import dagger.hilt.android.internal.Contexts.getApplication
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -29,16 +36,13 @@ abstract class BaseViewModel: ViewModel() {
                  apiCall()
              }catch (e: Exception){
                  when(e){
+                     is HttpException ->
+                         _showErrorLiveData.value = R.string.http_error
                      is NetworkErrorException,
                      is SocketTimeoutException,
                      is UnknownHostException ->
-                         _showErrorLiveData.value =  R.string.no_connection
-                     is HttpException ->
-                         _showErrorLiveData.value = R.string.http_error
-                     else ->
                          _showErrorLiveData.value = R.string.something_wrong
                  }
              }
     }
-
 }

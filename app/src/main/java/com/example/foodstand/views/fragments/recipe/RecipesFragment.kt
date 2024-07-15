@@ -2,7 +2,10 @@ package com.example.foodstand.views.fragments.recipe
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecipesFragment : BaseFragment(R.layout.fragment_recipes), OnClickListener {
+class RecipesFragment : BaseFragment(R.layout.fragment_recipes), OnClickListener, SearchView.OnQueryTextListener {
     override val viewModel by viewModels<RecipesViewModel>()
     private val args by navArgs<RecipesFragmentArgs>()
     private val mAdapter by lazy { RecipesAdapter(this) }
@@ -32,7 +35,7 @@ class RecipesFragment : BaseFragment(R.layout.fragment_recipes), OnClickListener
             recyclerView.adapter = mAdapter
             swipeToRefresh.setOnRefreshListener {
                 val results = viewModel.localFoodRecipesListLiveData.value
-                if(results!!.isNotEmpty()){
+                if(results!!.isNotEmpty() && isNetworkAvailable){
                     Log.d("FoodRecipe","local database called from Fragment 0")
                     binding.swipeToRefresh.isRefreshing = false
                     mAdapter.submitList(results[0].foodRecipe.Results)
@@ -42,7 +45,9 @@ class RecipesFragment : BaseFragment(R.layout.fragment_recipes), OnClickListener
             }
 
             recipesFab.setOnClickListener {
-                findNavController().navigate(R.id.action_recipesFragment_to_bottomSheetFragment)
+                if(isNetworkAvailable){
+                    findNavController().navigate(R.id.action_recipesFragment_to_bottomSheetFragment)
+                }
             }
         }
 
@@ -66,7 +71,25 @@ class RecipesFragment : BaseFragment(R.layout.fragment_recipes), OnClickListener
         }
     }
 
-    override fun onItemClicked(id: Int) {
+    @Deprecated("Deprecated in Java")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.recipe_menu, menu)
 
+        val search = menu.findItem(R.id.app_bar_search)
+        val searchView = search.actionView as? SearchView
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(this)
+    }
+
+
+    override fun onItemClicked(id: Int) {
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return true
     }
 }

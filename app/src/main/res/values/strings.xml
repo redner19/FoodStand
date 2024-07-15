@@ -9,6 +9,7 @@
     <string name="this_image_is_for_food_recipes">This image is for food recipes</string>
 
     <string name="no_connection">No connection is available.</string>
+    <string name="has_connection">Connection has been restored.</string>
     <string name="http_error">An api error has occurred.</string>
     <string name="something_wrong">Something is wrong. Please try again.</string>
     <string name="vegan">Vegan</string>
@@ -36,4 +37,5 @@
     <string name="whole30">Whole30</string>
     <string name="primal">Primal</string>
     <string name="apply">Apply</string>
+    <string name="search">Search</string>
 </resources>

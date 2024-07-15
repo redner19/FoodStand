@@ -43,7 +43,6 @@ class RecipesViewModel @Inject constructor(
 
     val readMealAndDietType = dataStoreRepository.readMealAndDietType
 
-
     /**Remote**/
     private val _foodRecipesListLiveData = MutableLiveData<List<ResultsModel>>()
 
